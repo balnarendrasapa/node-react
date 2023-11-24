@@ -4,7 +4,7 @@ const HuggingFaceTransformersEmbeddingsM = import(
   'langchain/embeddings/hf_transformers'
 );
 
-export const run = async () => {
+export const getVectordb = async (file: Blob) => {
   const FaissStore = (await FaissStoreM).FaissStore;
   const PDFLoader = (await PDFLoaderM).PDFLoader;
   const HuggingFaceTransformersEmbeddings = (
@@ -13,21 +13,11 @@ export const run = async () => {
   const model = new HuggingFaceTransformersEmbeddings({
     modelName: 'Xenova/all-MiniLM-L6-v2',
   });
-  const loader = new PDFLoader('./files/abc.pdf');
+  const loader = new PDFLoader(file);
 
   const vectorStore = await FaissStore.fromDocuments(
     await loader.load(),
     model,
   );
-  const resultOne = await vectorStore.similaritySearch('geographical', 1);
-  console.log(resultOne);
   return vectorStore;
 };
-
-const main = async () => {
-  const vst = await run();
-  console.log('--------------------');
-  console.log(await vst.similaritySearch('geographical', 1));
-};
-
-main();
