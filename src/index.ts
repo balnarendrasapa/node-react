@@ -2,10 +2,10 @@ import express from 'express';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 
-const FileTable = require('./database');
+import { FileTable } from './database';
 
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 const app = express();
 const port = 3000;
 
@@ -44,8 +44,11 @@ app.get('/showfile/:guid', (req, res) => {
       const filename = file.filename;
       const fileGuid = file.guid;
 
-      res.json({ message: 'File retrieved successfully', filename: filename, guid: fileGuid });
-
+      res.json({
+        message: 'File retrieved successfully',
+        filename: filename,
+        guid: fileGuid,
+      });
     })
     .catch((err: any) => {
       res.status(500).json({ message: 'Error retrieving file', error: err });
@@ -55,4 +58,3 @@ app.get('/showfile/:guid', (req, res) => {
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });
-
