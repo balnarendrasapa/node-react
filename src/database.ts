@@ -16,7 +16,11 @@ export const FileTable = sequelize.define('File', {
     defaultValue: DataTypes.UUIDV4,
     allowNull: false,
   },
-  fileData: {
+  docstorejson: {
+    type: DataTypes.BLOB('long'),
+    allowNull: false,
+  },
+  faissindex: {
     type: DataTypes.BLOB('long'),
     allowNull: false,
   },
