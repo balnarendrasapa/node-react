@@ -16,7 +16,6 @@ const app = express();
 const port = 3000;
 
 app.post('/upload', upload.single('file'), async (req, res) => {
-
   if (!req.file) {
     res.status(400).json({ message: 'No file uploaded' });
     return;
@@ -25,7 +24,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   const guid = uuidv4();
 
   const vdb = await getVectordb(new Blob([req.file.buffer]));
-  await vdb.save("files/")
+  await vdb.save('files/');
   const docstorejson = fs.readFileSync('files/docstore.json');
   const faissindex = fs.readFileSync('files/faiss.index');
   const fileData = {
@@ -60,9 +59,9 @@ app.post('/chat/:guid', async (req, res) => {
     fs.writeFile('files/faiss.index', file.faissindex, (err: any) => {
       if (err) throw err;
     });
-  })
-  const vdb = await FaissStore.load("files/", model)
-  console.log("------------------")
+  });
+  const vdb = await FaissStore.load('files/', model);
+  console.log('------------------');
   console.log(await vdb.similaritySearch('geographical', 1));
   res.json({ message: 'Chat started successfully' });
 });
