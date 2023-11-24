@@ -20,5 +20,4 @@ export const getVectordb = async (file: Blob) => {
     model,
   );
   return vectorStore;
-
 };
