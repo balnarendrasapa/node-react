@@ -28,4 +28,4 @@ FileTable.sync({ force: true })
   })
   .catch(console.error);
 
-module.exports = FileTable;
+// module.exports = FileTable;
