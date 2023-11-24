@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 const fs = require('fs');
 
 import { FileTable } from './database';
-import { getVectordb, getVectordbFromIndexDocstore } from './llm-ops';
+import { getVectordb } from './llm-ops';
 const HuggingFaceTransformersEmbeddingsM = import(
   'langchain/embeddings/hf_transformers'
 );
