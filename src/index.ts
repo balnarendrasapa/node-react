@@ -3,13 +3,14 @@ import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 
 import { FileTable } from './database';
+import { getVectordb, getVectordbFromIndexDocstore } from './llm-ops';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const app = express();
 const port = 3000;
 
-app.post('/upload', upload.single('file'), (req, res) => {
+app.post('/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     res.status(400).json({ message: 'No file uploaded' });
     return;
@@ -21,6 +22,16 @@ app.post('/upload', upload.single('file'), (req, res) => {
     guid: guid,
     fileData: req.file.buffer,
   };
+  const vdb = await getVectordb(new Blob([req.file.buffer]));
+  // console.log(await vdb.similaritySearch('geographical', 1));
+  const docstore = await vdb.getDocstore()
+  const mapping = await vdb.getMapping()
+  const index = await vdb.index
+  const vdb2 = await getVectordbFromIndexDocstore(docstore, index, mapping)
+  console.log("---------------------")
+  console.log(await vdb2.similaritySearch('geographical', 1));
+  // console.log(await JSON.stringify([Array.from(vdb.docstore._docs.entries()), vdb._mapping]))
+  // console.log(await vdb._index)
 
   FileTable.create(fileData)
     .then(() => {
